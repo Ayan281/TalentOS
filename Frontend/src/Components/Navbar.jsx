@@ -4,7 +4,7 @@ import useTheme from "./Pages/themeContext";
 import { useAuth } from "../context/AuthContext";
 import { useChat } from "../hooks/useChat";
 import ChatPopup from "./chat/ChatPopup";
-import api from "../lib/axios"; // ✅ only this line changed
+import api from "../lib/axios";
 import toast from "react-hot-toast";
 
 const Navbar = () => {
@@ -18,7 +18,7 @@ const Navbar = () => {
   const logoutHandler = async () => {
     const toastId = toast.loading("Logging out...");
     try {
-      await api.post("/api/auth/logout", {}); // ✅ only this line changed
+      await api.post("/api/auth/logout", {});
     } catch (err) {
       console.warn("Logout request failed:", err);
     } finally {
@@ -48,10 +48,10 @@ const Navbar = () => {
           : "bg-[#050505]/70 border-white/[0.05] text-white shadow-2xl"
       }`}
     >
-      <div className="flex w-full max-w-[1400px] mx-auto items-center justify-between px-6 md:px-12 h-full">
-
-        {/* Left Nav Items & Mobile Hamburger */}
-        <div className="flex items-center gap-8">
+      <div className="flex w-full max-w-[1400px] mx-auto items-center justify-between px-4 md:px-12 h-full">
+        
+        {/* Left Nav Items & Mobile Hamburger - Added z-10 and adjusted gap for mobile */}
+        <div className="flex items-center gap-4 md:gap-8 z-10">
           <button
             className="md:hidden p-1 focus:outline-none transition-colors"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -76,8 +76,8 @@ const Navbar = () => {
           </div>
         </div>
 
-        {/* Center Logo */}
-        <Link to="/" className="flex-shrink-0 relative group cursor-pointer flex items-center gap-3 absolute left-1/2 transform -translate-x-1/2 md:static md:transform-none">
+        {/* Center Logo - Removed conflicting 'relative' class that fought with 'absolute' */}
+        <Link to="/" className="flex-shrink-0 group cursor-pointer flex items-center gap-3 absolute left-1/2 transform -translate-x-1/2 md:static md:transform-none z-0">
           <div className={`w-9 h-9 flex items-center justify-center rounded-xl font-black text-xl shadow-lg transition-transform group-hover:scale-105 duration-300 ${themeMode === "light" ? "bg-[#9DFF13] text-black" : "bg-[#9DFF13] text-[#050505] shadow-[0_0_15px_rgba(157,255,19,0.3)]"}`}>
             T
           </div>
@@ -86,8 +86,8 @@ const Navbar = () => {
           </span>
         </Link>
 
-        {/* Right Nav Items */}
-        <div className="flex items-center gap-4">
+        {/* Right Nav Items - Added z-10 and reduced gap on mobile to fit the extra chat button */}
+        <div className="flex items-center gap-2 sm:gap-4 z-10">
           <Link to="/marketplace" className={`text-sm font-medium transition-all duration-300 hidden md:block ${themeMode === "light" ? "text-black/60 hover:text-black" : "text-white/60 hover:text-white"}`}>
             Marketplace
           </Link>
@@ -123,7 +123,7 @@ const Navbar = () => {
           {currentUser && (
             <button
               onClick={() => setChatOpen(!chatOpen)}
-              className={`relative flex items-center justify-center w-10 h-10 rounded-full border transition-all duration-300
+              className={`relative flex flex-shrink-0 items-center justify-center w-10 h-10 rounded-full border transition-all duration-300
                 ${chatOpen
                   ? "border-[#9DFF13] text-[#9DFF13] bg-[#9DFF13]/10"
                   : themeMode === "dark"
@@ -141,14 +141,14 @@ const Navbar = () => {
           )}
 
           {themeMode === "dark" ? (
-            <button onClick={lightTheme} className="flex items-center justify-center w-10 h-10 rounded-full border border-white/10 bg-white/5 hover:border-[#9DFF13] hover:text-[#9DFF13] transition-all duration-300" aria-label="Switch to Light Mode">
+            <button onClick={lightTheme} className="flex flex-shrink-0 items-center justify-center w-10 h-10 rounded-full border border-white/10 bg-white/5 hover:border-[#9DFF13] hover:text-[#9DFF13] transition-all duration-300" aria-label="Switch to Light Mode">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                 <circle cx="12" cy="12" r="5" />
                 <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
               </svg>
             </button>
           ) : (
-            <button onClick={darkTheme} className="flex items-center justify-center w-10 h-10 rounded-full border border-black/10 bg-black/5 hover:border-[#9DFF13] hover:text-black hover:bg-[#9DFF13]/10 transition-all duration-300" aria-label="Switch to Dark Mode">
+            <button onClick={darkTheme} className="flex flex-shrink-0 items-center justify-center w-10 h-10 rounded-full border border-black/10 bg-black/5 hover:border-[#9DFF13] hover:text-black hover:bg-[#9DFF13]/10 transition-all duration-300" aria-label="Switch to Dark Mode">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                 <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
               </svg>
